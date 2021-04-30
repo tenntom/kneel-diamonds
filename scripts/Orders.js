@@ -23,17 +23,18 @@ const buildOrderListItem = (order) => {
         }
     )
 
-    const totalCost = foundMetal.price + + foundStyle.price + foundSize.price
+    const totalCost = foundMetal.price + foundStyle.price + foundSize.price
     
     const costString = totalCost.toLocaleString("en-US", {
         style: "currency",
         currency: "USD"
     })
-    return `<li>
+    return `
+    <li>
         Order #${order.id} was placed on ${order.timestamp}
     </li>
     <li>
-    Order #${order.id} costs ${costString}
+        Order #${order.id} costs ${costString}
     </li>`
 }
 
