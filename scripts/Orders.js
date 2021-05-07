@@ -1,9 +1,10 @@
-import { getOrders, getMetals, getStyles, getSizes } from "./database.js"
+import { getOrders, getMetals, getStyles, getSizes, getItems } from "./database.js"
 
 const buildOrderListItem = (order) => {
     const metals = getMetals()
     const styles = getStyles()
     const sizes = getSizes()
+    const items = getItems ()
     
     const foundMetal = metals.find(
         (metal) => {
@@ -23,18 +24,23 @@ const buildOrderListItem = (order) => {
         }
     )
 
+    const foundItem = items.find(
+        (item) => {
+            return item.id === order.itemId
+        }
+    )
+
     const totalCost = foundMetal.price + foundStyle.price + foundSize.price
+
+    const additionalCost = foundItem.priceFactor*totalCost
     
-    const costString = totalCost.toLocaleString("en-US", {
+    const costString = additionalCost.toLocaleString("en-US", {
         style: "currency",
         currency: "USD"
     })
     return `
     <li>
-        Order #${order.id} was placed on ${order.timestamp}
-    </li>
-    <li>
-        Order #${order.id} costs ${costString}
+        Order #${order.id} was placed on ${order.timestamp}. It includes a ${foundStyle.style} ${foundMetal.metal} ${foundItem.item} and totals ${costString}.
     </li>`
 }
 

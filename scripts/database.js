@@ -25,12 +25,18 @@ const database = {
         { id: 4, metal: "Platinum", price: 795.45 },
         { id: 5, metal: "Palladium", price: 1241.0 }
     ],
+    items:[
+        {id: 1, item: "Ring", priceFactor: 1},
+        {id: 2, item: "Earring", priceFactor: 2},
+        {id: 3, item: "Necklace", priceFactor: 4}
+    ],
     customOrders: [
         {
             id: 1,
             metalId: 3,
             sizeId: 2,
             styleId: 3,
+            itemId: 2,
             timestamp: 1614659931693
         }
     ],
@@ -49,6 +55,10 @@ export const getStyles = () => {
     return [...database.styles]
 }
 
+export const getItems = () => {
+    return [...database.items]
+}
+
 export const getOrders = () => {
     return [...database.customOrders]
 }
@@ -65,34 +75,36 @@ export const setStyle = (id) => {
     database.orderBuilder.styleId = id
 }
 
+export const setItem = (id) => {
+    database.orderBuilder.itemId = id
+}
+
 // console.log (database.orderBuilder) // Just checking.
 
 export const addCustomOrder = () => {
-    // Copy the current state of user choices
-    const newOrder = {...database.orderBuilder}
+    if (
+        "metalId" in database.orderBuilder &&
+        "styleId" in database.orderBuilder &&
+        "sizeId" in database.orderBuilder &&
+        "itemId" in database.orderBuilder
+    ) {
+        // Copy the current state of user choices
+        const newOrder = { ...database.orderBuilder }
 
-    // if (newOrder == null) {
-    //     return {
-    //         id: 0,
-    //         metalId: 0,
-    //         sizeId: 0,
-    //         styleId: 0,
-    //         timestamp: 0
-    //     }
-    // } else {
-    // Add a new primary key to the object
-    newOrder.id = [...database.customOrders].pop().id + 1
+        newOrder.id = [...database.customOrders].pop().id + 1
 
-    // Add a timestamp to the order
-    newOrder.timestamp = Date.now()
+        // Add a timestamp to the order
+        newOrder.timestamp = Date.now()
 
-    // Add the new order object to custom orders state
-    database.customOrders.push(newOrder)
+        // Add the new order object to custom orders state
+        database.customOrders.push(newOrder)
 
-    // Reset the temporary state for user choices
-    database.orderBuilder = {}
+        // Reset the temporary state for user choices
+        database.orderBuilder = {}
 
-    // Broadcast a notification that permanent state has changed
-    document.dispatchEvent(new CustomEvent("stateChanged"))
-    // }
+        // Broadcast a notification that permanent state has changed
+        document.dispatchEvent(new CustomEvent("stateChanged"))
+    } else {
+        window.alert("Please complete all required fields.")
+    }
 }

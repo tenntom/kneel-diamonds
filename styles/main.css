@@ -10,7 +10,7 @@ select,
 textarea {
 	color: #404040;
 	font-family: "Comfortaa", Arial, sans-serif;
-	font-size: 14px;
+	font-size: 24px;
 	line-height: 1.5;
 }
 
@@ -25,7 +25,7 @@ ul {
 }
 
 #orderButton {
-    margin: 1rem 0 2rem 2rem;
+    margin: 1rem 1rem 1rem 4rem;
     padding: 0.5rem;
     background-color: rgb(227, 72, 72);
     color: lightgoldenrodyellow;
