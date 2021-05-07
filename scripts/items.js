@@ -1,4 +1,4 @@
-import { getItems, setItem } from "./database.js"
+import { getItems, setItem } from "./dataAccess.js"
 
 const items = getItems()
 
